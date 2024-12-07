@@ -1,0 +1,46 @@
+<launch>
+    <arg name="use_rviz" default="true"/>
+    <arg name="rviz_config" default="$(find amr_navigation)/rviz/navigation.rviz"/>
+
+    <arg name="map_file" default="$(find amr_maps)/maps/map.yaml"/>
+    <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" output="screen"/>
+
+    <node pkg="tf2_ros" type="static_transform_publisher" name="map_to_odom" 
+          args="0 0 0 0 0 0 map odom" />
+          
+    <node pkg="tf2_ros" type="static_transform_publisher" name="odom_to_base_link"
+          args="0 0 0 0 0 0 odom base_link" />
+    
+    <node pkg="amcl" type="amcl" name="amcl" output="screen">
+        <param name="odom_frame_id" value="odom"/>
+        <param name="base_frame_id" value="base_link"/>
+        <param name="global_frame_id" value="map"/>
+        
+        <param name="min_particles" value="500"/>
+        <param name="max_particles" value="3000"/>
+        <param name="update_min_d" value="0.2"/>
+        <param name="update_min_a" value="0.5"/>
+    </node>
+
+    <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+        <rosparam file="$(find amr_navigation)/config/normal_costmap_common_params.yaml" command="load" ns="global_costmap" />
+        <rosparam file="$(find amr_navigation)/config/normal_costmap_common_params.yaml" command="load" ns="local_costmap" />
+        <rosparam file="$(find amr_navigation)/config/local_costmap_params.yaml" command="load" />
+        <rosparam file="$(find amr_navigation)/config/global_costmap_params.yaml" command="load" />
+        <rosparam file="$(find amr_navigation)/config/move_base_params.yaml" command="load" />
+        <rosparam file="$(find amr_navigation)/config/local_planner_params.yaml" command="load" />
+
+        <param name="base_global_planner" value="navfn/NavfnROS"/>
+        <param name="base_local_planner" value="base_local_planner/TrajectoryPlannerROS"/>
+
+        <param name="planner_frequency" value="1.0" />
+        <param name="planner_patience" value="5.0" />
+        <param name="controller_frequency" value="5.0" />
+        <param name="controller_patience" value="15.0" />
+    </node>
+
+    <group if="$(arg use_rviz)">
+        <node pkg="rviz" type="rviz" name="rviz"
+              args="-d $(arg rviz_config)" output="screen"/>
+    </group>
+</launch>

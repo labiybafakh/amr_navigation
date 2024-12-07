@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>amr_navigation</name>
+  <version>0.0.0</version>
+  <description>The amr_navigation package</description>
+
+  <maintainer email="labiybafakh@gmail.com">toys</maintainer>
+
+  <license>MIT license</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>rospy</depend>
+  <depend>tf2_ros</depend>
+  <depend>move_base</depend>
+  <depend>amcl</depend>
+  <depend>map_server</depend>
+
+</package>
