@@ -5,6 +5,8 @@
     <arg name="map_file" default="$(find amr_maps)/maps/map.yaml"/>
     <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" output="screen"/>
 
+    <arg name="use_angled" default="false"/>
+
     <node pkg="tf2_ros" type="static_transform_publisher" name="map_to_odom" 
           args="0 0 0 0 0 0 map odom" />
           
@@ -23,8 +25,27 @@
     </node>
 
     <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
-        <rosparam file="$(find amr_navigation)/config/normal_costmap_common_params.yaml" command="load" ns="global_costmap" />
-        <rosparam file="$(find amr_navigation)/config/normal_costmap_common_params.yaml" command="load" ns="local_costmap" />
+
+        <rosparam file="$(find amr_navigation)/config/normal_costmap_common_params.yaml" 
+            command="load" 
+            ns="global_costmap"
+            unless="$(arg use_angled)" />
+
+        <rosparam file="$(find amr_navigation)/config/normal_costmap_common_params.yaml" 
+            command="load" 
+            ns="local_costmap"
+            unless="$(arg use_angled)" />
+
+        <rosparam file="$(find amr_navigation)/config/angled_costmap_common_params.yaml" 
+            command="load" 
+            ns="global_costmap"
+            if="$(arg use_angled)" />
+
+        <rosparam file="$(find amr_navigation)/config/angled_costmap_common_params.yaml" 
+            command="load" 
+            ns="local_costmap"
+            if="$(arg use_angled)" />
+
         <rosparam file="$(find amr_navigation)/config/local_costmap_params.yaml" command="load" />
         <rosparam file="$(find amr_navigation)/config/global_costmap_params.yaml" command="load" />
         <rosparam file="$(find amr_navigation)/config/move_base_params.yaml" command="load" />
