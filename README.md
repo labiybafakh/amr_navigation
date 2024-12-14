@@ -14,7 +14,7 @@ rosdep install --from-paths src --ignore-src -r -y
 
 Build the package and soure it
 ```bash
-catkin build
+catkin build -DCMAKE_BUILD_TYPE=Release
 source devel/setup.bash
 ```
 

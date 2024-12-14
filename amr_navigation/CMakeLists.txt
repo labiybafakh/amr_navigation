@@ -30,7 +30,7 @@ include_directories(
 )
 
 
-add_executable(${PROJECT_NAME}_node src/amr_navigation_node.cpp)
+add_executable(${PROJECT_NAME}_node src/cmdvel_to_odom.cpp)
 
 target_link_libraries(${PROJECT_NAME}_node
   ${catkin_LIBRARIES}
