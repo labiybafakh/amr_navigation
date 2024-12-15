@@ -15,6 +15,6 @@ TebLocalPlannerROS:
     max_global_plan_lookahead_dist: 3.0
     feasibility_check_no_poses: 5
     
-    xy_goal_tolerance: 0.15
     yaw_goal_tolerance: 0.1
+    xy_goal_tolerance: 0.1
     free_goal_vel: false

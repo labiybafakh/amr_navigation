@@ -10,5 +10,5 @@ footprint: [
 ]
 
 map_type: costmap
-cost_scaling_factor: 0.2
+cost_scaling_factor: 1.0
 inflation_radius: 1.2
