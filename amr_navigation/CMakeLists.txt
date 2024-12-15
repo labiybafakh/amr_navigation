@@ -11,6 +11,9 @@ find_package(catkin REQUIRED COMPONENTS
   move_base
   amcl
   map_server
+  teb_local_planner
+  base_local_planner
+  dwa_local_planner
 )
 
 catkin_package(
@@ -22,6 +25,9 @@ catkin_package(
     move_base
     amcl
     map_server
+    teb_local_planner
+    base_local_planner
+    dwa_local_planner
 )
 
 include_directories(

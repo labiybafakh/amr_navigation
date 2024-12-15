@@ -1,0 +1,22 @@
+TrajectoryPlannerROS:
+    # Robot Configuration
+    max_vel_x: 0.5
+    min_vel_x: 0.1
+    max_vel_theta: 0.5
+    min_vel_theta: -0.5
+    min_in_place_vel_theta: 0.2
+    
+    # Acceleration limits
+    acc_lim_theta: 1.0
+    acc_lim_x: 0.8
+    
+    # Goal Tolerance
+    yaw_goal_tolerance: 0.1
+    xy_goal_tolerance: 0.15
+    
+    # Trajectory Scoring
+    meter_scoring: true
+    path_distance_bias: 0.8
+    goal_distance_bias: 0.6
+    occdist_scale: 0.02
+    heading_lookahead: 0.5

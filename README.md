@@ -19,12 +19,28 @@ source devel/setup.bash
 ```
 
 ### Run
+#### Footprint Options
+- To use the normal configuration, just set the argument as false or without the argument since it is the default
+```bash
+roslaunch amr_navigation navigation.launch
+```
 
 - To use the angled robot configuration for costmap, the argument of use_angled should be set as true
 ```bash
 roslaunch amr_navigation navigation.launch use_angled:=true
 ```
-- To use the normal configuration, just set the argument as false or without the argument since it is the default
+
+#### Planner options
+Several local planner can be tested on the navigation.
+- Dynamic Window Approach
 ```bash
-roslaunch amr_navigation navigation.launch
+roslaunch amr_navigation navigation.launch local:=dwa
+```
+- TEB
+```bash
+roslaunch amr_navigation navigation.launch local:=teb
+```
+- TrajectoryPlanner
+```bash
+roslaunch amr_navigation navigation.launch local:=tp
 ```

@@ -6,6 +6,7 @@
     <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" output="screen"/>
 
     <arg name="use_angled" default="false"/>
+    <arg name="local" default="dwa"/>
 
     <node pkg="tf2_ros" type="static_transform_publisher" name="map_to_odom" 
           args="0 0 0 0 0 0 map odom" />
@@ -18,10 +19,11 @@
         <param name="base_frame_id" value="base_link"/>
         <param name="global_frame_id" value="map"/>
         
-        <param name="min_particles" value="500"/>
-        <param name="max_particles" value="3000"/>
+        <param name="min_particles" value="1000"/>
+        <param name="max_particles" value="5000"/>
         <param name="update_min_d" value="0.2"/>
         <param name="update_min_a" value="0.5"/>
+        <param name="use_map_topic" value="true"/>
     </node>
 
     <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
@@ -49,10 +51,24 @@
         <rosparam file="$(find amr_navigation)/config/local_costmap_params.yaml" command="load" />
         <rosparam file="$(find amr_navigation)/config/global_costmap_params.yaml" command="load" />
         <rosparam file="$(find amr_navigation)/config/move_base_params.yaml" command="load" />
-        <rosparam file="$(find amr_navigation)/config/local_planner_params.yaml" command="load" />
+        
+        <rosparam if="$(eval local == 'dwa')" 
+            command="load" 
+            file="$(find amr_navigation)/config/local_dwa_params.yaml"/>
+        <rosparam if="$(eval local == 'teb')" 
+            command="load" 
+            file="$(find amr_navigation)/config/local_teb_params.yaml"/>
+        <rosparam if="$(eval local == 'tp')" 
+            command="load" 
+            file="$(find amr_navigation)/config/local_trajectoryplanner_params.yaml"/>
 
         <param name="base_global_planner" value="navfn/NavfnROS"/>
-        <param name="base_local_planner" value="base_local_planner/TrajectoryPlannerROS"/>
+        <param name="base_local_planner" value=
+            "$(eval 'dwa_local_planner/DWAPlannerROS' if arg('local') == 'dwa' 
+            else 'teb_local_planner/TebLocalPlannerROS' if arg('local') == 'teb'
+            else 'base_local_planner/TrajectoryPlannerROS' if arg('local') == 'tp'
+            else 'dwa_local_planner/DWAPlannerROS')" />
+        
 
         <param name="planner_frequency" value="1.0" />
         <param name="planner_patience" value="5.0" />
@@ -64,4 +80,9 @@
         <node pkg="rviz" type="rviz" name="rviz"
               args="-d $(arg rviz_config)" output="screen"/>
     </group>
+
+    <node pkg="rostopic" type="rostopic" name="print_planner_info" 
+    args="echo /move_base/local_planner_type" 
+    output="screen" 
+    launch-prefix="echo 'Selected local planner: $(arg local)' ; " />
 </launch>

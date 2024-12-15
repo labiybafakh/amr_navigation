@@ -16,5 +16,8 @@
   <depend>move_base</depend>
   <depend>amcl</depend>
   <depend>map_server</depend>
+  <depend>dwa_local_planner</depend>
+  <depend>base_local_planner</depend>
+  <depend>teb_local_planner</depend>
 
 </package>
