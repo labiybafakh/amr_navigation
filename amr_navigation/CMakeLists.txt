@@ -3,6 +3,8 @@ project(amr_navigation)
 
 add_compile_options(-std=c++17)
 
+# set(sbpl_DIR /opt/ros/noetic/share/sbpl)
+
 find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   nav_msgs
@@ -14,6 +16,10 @@ find_package(catkin REQUIRED COMPONENTS
   teb_local_planner
   base_local_planner
   dwa_local_planner
+  navfn
+  global_planner
+  sbpl_lattice_planner
+  nav_core
 )
 
 catkin_package(
@@ -28,6 +34,10 @@ catkin_package(
     teb_local_planner
     base_local_planner
     dwa_local_planner
+    navfn
+    global_planner
+    sbpl_lattice_planner
+    nav_core
 )
 
 include_directories(
@@ -36,9 +46,9 @@ include_directories(
 )
 
 
-add_executable(${PROJECT_NAME}_node src/cmdvel_to_odom.cpp)
+add_executable(cmdvel_to_odom src/cmdvel_to_odom.cpp)
 
-target_link_libraries(${PROJECT_NAME}_node
+target_link_libraries(cmdvel_to_odom
   ${catkin_LIBRARIES}
 )
 

@@ -6,7 +6,8 @@
     <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" output="screen"/>
 
     <arg name="use_angled" default="false"/>
-    <arg name="local" default="dwa"/>
+    <arg name="local_plan" default="dwa"/>
+    <arg name="global_plan" default="navfn/NavfnROS"/>
 
     <node pkg="tf2_ros" type="static_transform_publisher" name="map_to_odom" 
           args="0 0 0 0 0 0 map odom" />
@@ -26,7 +27,7 @@
         <param name="use_map_topic" value="true"/>
     </node>
 
-    <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <node pkg="move_base" type="move_base" respawn="false" name="move_base">
 
         <rosparam file="$(find amr_navigation)/config/normal_costmap_common_params.yaml" 
             command="load" 
@@ -51,29 +52,48 @@
         <rosparam file="$(find amr_navigation)/config/local_costmap_params.yaml" command="load" />
         <rosparam file="$(find amr_navigation)/config/global_costmap_params.yaml" command="load" />
         <rosparam file="$(find amr_navigation)/config/move_base_params.yaml" command="load" />
-        
-        <rosparam if="$(eval local == 'dwa')" 
-            command="load" 
-            file="$(find amr_navigation)/config/local_dwa_params.yaml"/>
-        <rosparam if="$(eval local == 'teb')" 
-            command="load" 
-            file="$(find amr_navigation)/config/local_teb_params.yaml"/>
-        <rosparam if="$(eval local == 'tp')" 
-            command="load" 
-            file="$(find amr_navigation)/config/local_trajectoryplanner_params.yaml"/>
 
-        <param name="base_global_planner" value="navfn/NavfnROS"/>
+        <!-- <param name="base_global_planner" value=
+            "$(eval 'global_planner/GlobalPlanner' if arg('global_plan') == 'gplanner' 
+            else 'SBPLLatticePlanner' if arg('global_plan') == 'spbl'
+            else 'navfn/NavfnROS')" /> -->
+
+        <param name="base_global_planner" value=
+            "$(eval 'global_planner/GlobalPlanner' if arg('global_plan') == 'gplanner' 
+            else 'navfn/NavfnROS')" />
+
+        <rosparam if="$(eval global_plan == 'navfn')" 
+            command="load" 
+            file="$(find amr_navigation)/config/global_navfn_params.yaml"/>
+        <rosparam if="$(eval global_plan == 'gplanner')" 
+            command="load" 
+            file="$(find amr_navigation)/config/global_gplanner_params.yaml"/>
+        <!-- <rosparam if="$(eval global_plan == 'spbl')" 
+            command="load" 
+            file="$(find amr_navigation)/config/global_spbl_params.yaml"/> -->
+
+
         <param name="base_local_planner" value=
-            "$(eval 'dwa_local_planner/DWAPlannerROS' if arg('local') == 'dwa' 
-            else 'teb_local_planner/TebLocalPlannerROS' if arg('local') == 'teb'
-            else 'base_local_planner/TrajectoryPlannerROS' if arg('local') == 'tp'
+            "$(eval 'teb_local_planner/TebLocalPlannerROS' if arg('local_plan') == 'teb' 
+            else 'base_local_planner/TrajectoryPlannerROS' if arg('local_plan') == 'tp'
             else 'dwa_local_planner/DWAPlannerROS')" />
         
+        <rosparam if="$(eval local_plan == 'dwa')" 
+            command="load" 
+            file="$(find amr_navigation)/config/local_dwa_params.yaml"/>
+        <rosparam if="$(eval local_plan == 'teb')" 
+            command="load" 
+            file="$(find amr_navigation)/config/local_teb_params.yaml"/>
+        <rosparam if="$(eval local_plan == 'tp')" 
+            command="load" 
+            file="$(find amr_navigation)/config/local_trajectoryplanner_params.yaml"/>
 
         <param name="planner_frequency" value="1.0" />
         <param name="planner_patience" value="5.0" />
         <param name="controller_frequency" value="5.0" />
         <param name="controller_patience" value="15.0" />
+        <!-- <param name="SBPLLatticePlanner/verbose" value="true" /> -->
+
     </node>
 
     <group if="$(arg use_rviz)">
@@ -84,5 +104,5 @@
     <node pkg="rostopic" type="rostopic" name="print_planner_info" 
     args="echo /move_base/local_planner_type" 
     output="screen" 
-    launch-prefix="echo 'Selected local planner: $(arg local)' ; " />
+    launch-prefix="echo 'Selected local planner: $(arg local_plan)' ; " />
 </launch>
