@@ -93,8 +93,10 @@
         <param name="controller_frequency" value="5.0" />
         <param name="controller_patience" value="15.0" />
         <!-- <param name="SBPLLatticePlanner/verbose" value="true" /> -->
-
+        
     </node>
+
+    <node pkg="amr_navigation" type="cmdvel_to_odom" name="cmdvel_to_odom"/>
 
     <group if="$(arg use_rviz)">
         <node pkg="rviz" type="rviz" name="rviz"
