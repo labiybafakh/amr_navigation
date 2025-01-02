@@ -30,10 +30,6 @@ roslaunch amr_navigation navigation.launch
 roslaunch amr_navigation navigation.launch use_angled:=true
 ```
 
-- Run the odometry node which converts cmd_vel to odom.
-```bash
-rosrun amr_navigation cmdvel_to_odom
-```
 #### Planner options
 Several local planner such as DWAPlanner(dwa), TrajectoryPlanner(tp), and TEBPlanner(teb) are utilized.
 
