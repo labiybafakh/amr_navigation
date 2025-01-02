@@ -41,14 +41,16 @@ catkin_package(
 )
 
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
 )
 
 
-add_executable(cmdvel_to_odom src/cmdvel_to_odom.cpp)
+add_executable(odom_publisher
+  src/odom_publisher.cpp
+  src/cmdvel_to_odom.cpp)
 
-target_link_libraries(cmdvel_to_odom
+target_link_libraries(odom_publisher
   ${catkin_LIBRARIES}
 )
 
