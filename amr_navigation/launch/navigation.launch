@@ -96,8 +96,6 @@
         
     </node>
 
-    <node pkg="amr_navigation" type="cmdvel_to_odom" name="cmdvel_to_odom"/>
-
     <group if="$(arg use_rviz)">
         <node pkg="rviz" type="rviz" name="rviz"
               args="-d $(arg rviz_config)" output="screen"/>
