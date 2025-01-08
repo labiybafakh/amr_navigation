@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>amr_multi_goal</name>
+  <name>amr_waypoints</name>
   <version>0.0.0</version>
   <description>The multi_goal_navigation package</description>
 
@@ -13,6 +13,8 @@
   <depend>actionlib</depend>
   <depend>move_base_msgs</depend>
   <depend>roscpp</depend>
+  <depend>tf2</depend>
+
 
   <export>
 

@@ -1,15 +1,16 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(amr_multi_goal)
+project(amr_waypoints)
 
 find_package(catkin REQUIRED COMPONENTS
   actionlib
   move_base_msgs
   roscpp
+  tf2
 )
 
 catkin_package(
  INCLUDE_DIRS include
- CATKIN_DEPENDS actionlib move_base_msgs roscpp
+ CATKIN_DEPENDS actionlib move_base_msgs roscpp tf2
 )
 
 include_directories(
