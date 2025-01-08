@@ -102,6 +102,7 @@
     </group>
 
     <node pkg="amr_navigation" type="odom_publisher" name="odom_publisher" />
+    <node pkg="amr_waypoints" type="amr_waypoints" name="amr_waypoints" />
 
     <node pkg="rostopic" type="rostopic" name="print_planner_info" 
     args="echo /move_base/local_planner_type" 
