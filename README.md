@@ -7,6 +7,7 @@ git clone https://github.com/labiybafakh/amr_navigation
 ```
 
 ### Build
+#### Native environment
 Make sure that all of the dependencies have been installed,
 ```bash
 rosdep install --from-paths src --ignore-src -r -y
@@ -17,6 +18,19 @@ Build the package and soure it
 catkin build -DCMAKE_BUILD_TYPE=Release
 source devel/setup.bash
 ```
+
+#### Docker
+1. Config and run docker
+```bash
+chmod +x Docker/build_docker.sh Docker/run_docker.sh 
+./Docker/build_docker.sh
+./Docker/run_docker.sh
+```
+2. Source to the workspace
+```bash
+source devel/setup.bash
+```
+
 
 ### Run
 #### Footprint Options

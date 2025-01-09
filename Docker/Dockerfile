@@ -16,12 +16,11 @@ RUN apt-get update && apt-get install -y \
 RUN mkdir -p /home/$USER && chmod a+rw /home/$USER
 RUN mkdir -p /home/$USER/ros_ws && chmod a+rw /home/$USER/ros_ws
 
-COPY amr_navigation /home/$USER/ros_ws/src
+# COPY amr_navigation /home/$USER/ros_ws/src
 
 WORKDIR /home/$USER/ros_ws
 
-# RUN cd src && /
-#     git clone https://github.com/labiybafakh/amr_navigation
+RUN git clone https://github.com/labiybafakh/amr_navigation src
 
 RUN sudo -E apt-get update && rosdep install --from-paths src --ignore-src --rosdistro humble -r -y
 
